@@ -1,0 +1,160 @@
+* {
+  padding: 0;
+  margin: 0;
+  user-select: none;
+}
+
+body {
+  font-family: Helvetica, Arial, sans-serif;
+  background-color: #eee;
+
+}
+
+#root {
+  --bar-width: 500px;
+  --sb-progress-color: #FC561E;
+  --sb-progress-bg-color: #DDD;
+  --sb-progress-height: 10px;
+  color: #fff;
+  font: 28px/1em 'Helvetica';
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+h1 {
+  text-shadow: 1px 0px 2px black; 
+  margin: 40px;
+}
+
+.list {
+  width: var(--bar-width);
+  height: 500px;
+}
+
+
+.bar {
+  position: absolute;
+  width: var(--bar-width);
+  overflow: visible;
+  pointer-events: auto;
+  transform-origin: 50% 50% 0px;
+  border-radius: 4px;
+  color: rgb(153, 153, 153);
+  line-height: 95px;
+  padding-left: 32px;
+  font-size: 18px;
+  font-weight: 400;
+  background-color: rgb(255, 255, 255);
+  box-sizing: border-box;
+}
+
+.link {
+  position: absolute;
+  color: rgb(76, 76, 76);
+  text-decoration: none;
+  font: 14px/1em 'Helvetica';
+  padding: 10px;
+  top: 0;
+  left: 0;
+}
+
+input {
+  inset: none;
+  width: 350px;
+  padding: 20px;
+}
+
+.button {
+  cursor: pointer;
+  padding: 20px;
+  background-color: white;
+  border-radius: 2px;
+}
+
+.soundcloud-player {
+  overflow: visible;
+  font-size: 14px;
+}
+
+.play {
+  height: 25px;
+  background: none;
+  outline: none;
+  border:none;
+  width: 25px;
+  cursor: pointer;
+  fill: #fff;
+}
+
+.play > svg {
+  fill:#fc561e;
+}
+
+.remove {
+  position: fixed;
+  top: -10px;
+  right: -10px;
+  padding: 6px 9px;
+  border-radius: 25px;
+  background-color: crimson;
+  color:white;
+  transition: 0.1s cubic-bezier(0.175,0.885,0.320,1.275);
+}
+
+.remove:hover {
+  transform: scale(1.1);
+  background-color: coral;
+}
+
+.controlButton {
+  border: none;
+  font-size: 40px;
+}
+
+.controlButton:focus, .controlButton:active {
+  outline: none;
+}
+
+.controlButton:active {
+  background-color: #9BC0EF;
+}
+
+form {
+  margin-top: 10px;
+}
+
+#addButton {
+  margin: 0px 0 10px 4px;
+}
+
+button:hover {
+  background-color: #DFF2F2;
+}
+
+button:hover path {
+  fill: #ff8364;
+}
+
+button[disabled] {
+	background-color: steelblue;
+    color: aliceblue;
+    border: 2px solid #005baa;
+	cursor: not-allowed;	
+}
+
+
+.sc-progress-container {
+  background-color: var(--sb-progress-bg-color);
+  width: 100%;
+  height: var(--sb-progress-height);
+  overflow: visible;
+  cursor: pointer;
+  margin: -8px 0 8px -10px;
+}
+
+.sc-progress-inner {
+  background-color: var(--sb-progress-color);
+  height: 100%;
+  transition: width .2s ease-in;
+}

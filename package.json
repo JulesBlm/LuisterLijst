@@ -1,0 +1,28 @@
+{
+  "name": "Luisterlijst",
+  "version": "0.0.1",
+  "description": "",
+  "keywords": [],
+  "main": "src/index.js",
+  "dependencies": {
+    "lodash": "4.17.5",
+    "react": "16.3.2",
+    "react-dom": "16.3.2",
+    "react-soundplayer": "^1.0.4",
+    "react-spring": "5.0.0",
+    "react-with-gesture": "1.0.6",
+    "react-youtube": "^7.6.0",
+    "styled-components": "^3.4.5",
+    "sweetalert": "^2.1.0",
+    "youtube-video-id": "0.0.2"
+  },
+  "devDependencies": {
+    "react-scripts": "^1.1.5"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject"
+  }
+}
