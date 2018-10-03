@@ -22,8 +22,25 @@ const ControlButton = styled.button`
     font-size: 40px;
     cursor: pointer;
     padding: 20px;
+    border: 0px;
     border-radius: 2px;
     background-color: white;
+
+    &:hover {
+        background-color: #DFF2F2;
+    }
+
+    &:hover path {
+        fill: #ff8364;
+    }
+
+    &:focus, &:active {
+        outline: none;
+    }
+      
+    &:active {
+        background-color: #9BC0EF;
+    }
 `;
 
 class Controls extends Component {
@@ -36,17 +53,16 @@ class Controls extends Component {
                     className="button controlButton">
 
                 </button>*/}
-                <button
+                <ControlButton
                     onClick={this.props.pauseControl}
-                    className="button controlButton"
                 >
 <svg width="50" height="50" viewBox="0 0 191.413 191.413">
       <path d="M34.802,0C15.661,0,0,15.661,0,34.802v121.808c0,19.141,15.661,34.802,34.802,34.802s34.802-15.661,34.802-34.802V34.802    C69.605,15.661,53.944,0,34.802,0z M52.204,156.611c0,10.441-6.96,17.401-17.401,17.401s-17.401-6.96-17.401-17.401V34.802    c0-10.441,6.96-17.401,17.401-17.401s17.401,6.96,17.401,17.401V156.611z"/>
       <path d="M156.611,0c-19.141,0-34.802,15.661-34.802,34.802v121.808c0,19.141,15.661,34.802,34.802,34.802    s34.802-15.661,34.802-34.802V34.802C191.413,15.661,175.752,0,156.611,0z M174.012,156.611c0,10.441-6.96,17.401-17.401,17.401    s-17.401-6.96-17.401-17.401V34.802c0-10.441,6.96-17.401,17.401-17.401s17.401,6.96,17.401,17.401V156.611z"/>
 </svg>
 
-                </button>
-                <button
+                </ControlButton>
+                <ControlButton
                     onClick={this.props.playControl} 
                     className="button controlButton"
                 >
@@ -56,7 +72,7 @@ class Controls extends Component {
                         c0.271-0.187,0.432-0.494,0.432-0.823S36.338,20.363,36.068,20.176z M7.5,39.095V2.904l26.239,18.096L7.5,39.095z"/>
                     </svg>
 
-                </button>
+                </ControlButton>
                 {/*<button
                     onClick={this.props.nextControl}
                     className="button controlButton"

@@ -1,17 +1,15 @@
 * {
   padding: 0;
   margin: 0;
-  user-select: none;
 }
 
 body {
   font-family: Helvetica, Arial, sans-serif;
   background-color: #eee;
-
 }
 
 #root {
-  --bar-width: 500px;
+  --bar-width: 600px;
   --sb-progress-color: #FC561E;
   --sb-progress-bg-color: #DDD;
   --sb-progress-height: 10px;
@@ -22,59 +20,28 @@ body {
   align-items: center;
 }
 
-h1 {
-  text-shadow: 1px 0px 2px black; 
-  margin: 40px;
-}
-
-.list {
-  width: var(--bar-width);
-  height: 500px;
-}
-
-
-.bar {
-  position: absolute;
-  width: var(--bar-width);
-  overflow: visible;
-  pointer-events: auto;
-  transform-origin: 50% 50% 0px;
-  border-radius: 4px;
-  color: rgb(153, 153, 153);
-  line-height: 95px;
-  padding-left: 32px;
-  font-size: 18px;
-  font-weight: 400;
-  background-color: rgb(255, 255, 255);
-  box-sizing: border-box;
-}
-
-.link {
-  position: absolute;
-  color: rgb(76, 76, 76);
-  text-decoration: none;
-  font: 14px/1em 'Helvetica';
-  padding: 10px;
-  top: 0;
-  left: 0;
+@media (max-width: 768px) {
+  #root {
+    --bar-width: 350px;
+  }
 }
 
 input {
   inset: none;
-  width: 350px;
+  width: calc( var(--bar-width) - 150px );
   padding: 20px;
+  margin-top: 10px;
 }
 
-.button {
-  cursor: pointer;
-  padding: 20px;
-  background-color: white;
-  border-radius: 2px;
+.player-wrapper {
+  position: relative;
+  padding-top: 56.25% /* Player ratio: 100 / (1280 / 720) */
 }
 
-.soundcloud-player {
-  overflow: visible;
-  font-size: 14px;
+.react-player {
+  position: absolute;
+  top: 10px;
+  left: 60px;
 }
 
 .play {
@@ -87,70 +54,19 @@ input {
   fill: #fff;
 }
 
-.play > svg {
-  fill:#fc561e;
-}
-
-.remove {
-  position: fixed;
-  top: -10px;
-  right: -10px;
-  padding: 6px 9px;
-  border-radius: 25px;
-  background-color: crimson;
-  color:white;
-  transition: 0.1s cubic-bezier(0.175,0.885,0.320,1.275);
-}
-
-.remove:hover {
-  transform: scale(1.1);
-  background-color: coral;
-}
-
-.controlButton {
-  border: none;
-  font-size: 40px;
-}
-
-.controlButton:focus, .controlButton:active {
-  outline: none;
-}
-
-.controlButton:active {
-  background-color: #9BC0EF;
-}
-
-form {
-  margin-top: 10px;
-}
-
 #addButton {
   margin: 0px 0 10px 4px;
 }
 
-button:hover {
-  background-color: #DFF2F2;
+.soundcloud-player {
 }
-
-button:hover path {
-  fill: #ff8364;
-}
-
-button[disabled] {
-	background-color: steelblue;
-    color: aliceblue;
-    border: 2px solid #005baa;
-	cursor: not-allowed;	
-}
-
 
 .sc-progress-container {
   background-color: var(--sb-progress-bg-color);
-  width: 100%;
+  width: 80%;
   height: var(--sb-progress-height);
   overflow: visible;
   cursor: pointer;
-  margin: -8px 0 8px -10px;
 }
 
 .sc-progress-inner {

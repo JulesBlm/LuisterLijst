@@ -11,10 +11,11 @@ class SoundCloudPlayer extends Component {
   componentDidMount() {
     let { soundCloudAudio } = this.props;
     const id = this.props.nr;
-    scDispatchArray[id] = soundCloudAudio._events.pause;
-    console.log(soundCloudAudio, soundCloudAudio._events.pause(), soundCloudAudio._events.ended())
 
-    this.props.addSCDispatchers(scDispatchArray);
+
+    console.log(soundCloudAudio, this.props);
+
+    // this.props.addSCDispatchers(scDispatchArray);
   }
 
   // addDispatch = (id) => (e) => {

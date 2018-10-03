@@ -1,48 +1,69 @@
-// Forked from: https://github.com/chenglou/react-motion/tree/master/demos/demo8-draggable-list
-// Original: http://framerjs.com/examples/preview/#list-sorting.framer
-
 import React, { Component } from 'react';
 import { Spring } from 'react-spring';
-import range from 'lodash/range';
-import YouTubePlayer from './YouTubePlayer';
-import SoundCloudPlayer from './SoundCloudPlayer';
+import MyPlayer from './MyPlayer';
+import Login from './Login';
+import RemoveButton from './RemoveButton';
 import styled from 'styled-components';
 
+
 const clamp = (n, min, max) => Math.max(Math.min(n, max), min)
+const barHeight = 140;
 
 const StyledBar = styled.div`
   position: absolute;
   width: var(--bar-width);
   overflow: visible;
-  pointer-events: auto;
   transform-origin: 50% 50% 0px;
   border-radius: 4px;
   color: rgb(153, 153, 153);
-  line-height: 100px;
-  padding-left: 32px;
+  line-height: ${barHeight}px;
+  padding-left: 25px;
   font-size: 18px;
   font-weight: 400;
-  background-color: rgb(255, 255, 255);
+  background-color: ${props => props.playing ? '#add8e6' : 'rgb(255, 255, 255)'};
   box-sizing: border-box;
 `;
 
-const RemoveButton = styled.button`
-  position: fixed;
-  top: -10px;
-  right: -10px;
-  padding: 6px 9px;
-  border-radius: 25px;
-  background-color: crimson;
-  color:white;
-  transition: 0.1s cubic-bezier(0.175,0.885,0.320,1.275);
+const ListDiv = styled.div`
+  width: var(--bar-width);
+  height: 500px;
+`;
+
+const DragPart = styled.div`
+  width: 5%;
+  height: 140px;
+  position: inherit;
+  background-color: #707070;
+  color: #fff;
+  right: 0;
+  cursor: grab;
+  border-radius: 0 4px 4px 0;
+
+  &:hover {
+    background-color: #484848;
+  }
+
+  &:focus {
+    background-color: #242424;
+  }
+
+  &:active {
+    cursor: grabbing;
+    background-color: #242424;
+  }
+
+
 `;
 
 function reinsert(arr, from, to) {
-  const _arr = arr.slice(0)
-  const val = _arr[from]
-  _arr.splice(from, 1)
-  _arr.splice(to, 0, val)
-  return _arr
+  console.group("Reinserting")
+  console.log(`from ${from} to ${to}`);
+  const newArray = arr.slice(0);
+  const val = newArray[from];
+  newArray.splice(from, 1);
+  newArray.splice(to, 0, val);
+  console.groupEnd();
+  return newArray;
 }
 
 class List extends Component {
@@ -60,33 +81,56 @@ class List extends Component {
     window.addEventListener('mouseup', this.handleMouseUp)
   }
 
-  handleTouchStart = (key, pressLocation, e) => this.handleMouseDown(key, pressLocation, e.touches[0])
+  handleTouchStart = (key, pressLocation, e) => {
+    // console.group("handleTouchStart")
+    this.handleMouseDown(key, pressLocation, e.touches[0])
+    // console.groupEnd("End of handleTouchStart");
+  }
   
-  handleTouchMove = e => e.preventDefault() || this.handleMouseMove(e.touches[0])
+  handleTouchMove = e => {
+    // console.group("handleTouchMove")
+    e.preventDefault() || this.handleMouseMove(e.touches[0])
+    // console.groupEnd("End of handleTouchMove");
+  }
 
-  handleMouseUp = () => this.setState({ isPressed: false, topDeltaY: 0 })
+
+  handleMouseUp = () => {
+    // console.group("handleMouseUp")
+    this.setState({ isPressed: false, topDeltaY: 0 })
+    // console.groupEnd("End of handleMouseUp");
+
+  }
 
   handleMouseDown = (pos, pressY, { pageY }) => {
     // console.group("Mousedown")
-      // console.log({pos})
+      //console.log({pos})
       // console.log({pressY})
       // console.log({pageY})
-    // console.groupEnd()
+    // console.groupEnd("End of mouseDown")
 
     this.setState({ topDeltaY: pageY - pressY, mouseY: pressY, isPressed: true, originalPosOfLastPressed: pos })
   }
 
   handleMouseMove = ({ pageY }) => {
     const order = this.props.order;
-    const { isPressed, topDeltaY, originalPosOfLastPressed } = this.state
+    const { isPressed, topDeltaY, originalPosOfLastPressed } = this.state;
 
     if (isPressed) {
-      const mouseY = pageY - topDeltaY
-      const currentRow = clamp(Math.round(mouseY / 110), 0, (order.length - 1) )
-      let newOrder = order
-      const myIndex = order.indexOf(originalPosOfLastPressed);
+      const mouseY = pageY - topDeltaY;
+      const currentRow = clamp(Math.round(mouseY / (barHeight+50)), 0, (order.length - 1) )
+      let newOrder = order;
+      // const myIndex = order.forEach(i => (i.id !== originalPosOfLastPressed) ? console.log(i) : undefined);
+      // const myIndex = order.indexOf(originalPosOfLastPressed);
 
-      // Find the index in array: order of nr: originalPosOfLastPressed
+      // const newAttempt = findInObjectArray(order, originalPosOfLastPressed);
+      // console.log(newAttempt);
+
+      // function findID(linkObject) { 
+      //   return linkObject.id === originalPosOfLastPressed;
+      // }
+
+      const myIndex = order.findIndex(linkObj => linkObj.id === originalPosOfLastPressed);
+
       if (currentRow !== myIndex) {
         newOrder = reinsert(order, myIndex, currentRow)
       }
@@ -99,62 +143,59 @@ class List extends Component {
   render() {
     const order = this.props.order;
     const { mouseY, isPressed, originalPosOfLastPressed } = this.state
+    const nowPlaying = this.props.nowPlaying;
+
+    // 1. Check if they are logged in
+    if (!this.props.uid) {
+      return <Login authenticate={this.props.authenticate} />;
+    }
+
     return (
-      <div className="list">
-      
-        {range(order.length).map( (i) => {
-          const active = originalPosOfLastPressed === i && isPressed;
+      <ListDiv>
+        {/* {console.log("---------------------------------------")}
+        {console.log("New render cycle!")}
+        {console.log("---------------------------------------")} */}
+        {order.map( (i, j) => {
+          const active = originalPosOfLastPressed === i.id && isPressed;
           
-          const style = active
-            ? { scale: 1.1, shadow: 16, y: mouseY }
-            : { scale: 1, shadow: 1, y: order.indexOf(i) * 110 }
+          const style = active ?
+              { scale: 1.1, shadow: 16, y: mouseY }
+            : { scale: 1, shadow: 1, y: order.indexOf(i) * (barHeight + 30)};
 
           return (
-            <Spring immediate={name => active && name === 'y'} to={style} key={i}>
+            <Spring immediate={name => active && name === 'y'} to={style} key={i.id}>
               {({ scale, shadow, y }) => (
                 <StyledBar
-                  onMouseDown={this.handleMouseDown.bind(null, i, y)}
-                  onTouchStart={this.handleTouchStart.bind(null, i, y)}
+                  playing={nowPlaying.id === i.id}
                   style={{
                     boxShadow: `rgba(0, 0, 0, 0.2) 0px ${shadow}px ${2 * shadow}px 0px`,
                     transform: `translate3d(0, ${y}px, 0) scale(${scale})`,
-                    zIndex: i === originalPosOfLastPressed ? 99 : i
-                  }}>
-                  {order.indexOf(i) + 1} :
-  
-                  {this.props.links[i].youtube && 
-                    <YouTubePlayer
-                      addDispatchers={this.props.addDispatchers}
-                      onlyChangePaused={this.props.onlyChangePaused}
+                    zIndex: i === originalPosOfLastPressed ? 99 : i.id
+                  }}
+                >
 
-                      playYoutube={this.props.playYoutube}
-                      nextControl={this.props.nextControl}
+                  <DragPart
+                    onMouseDown={this.handleMouseDown.bind(null, i.id, y)}
+                    onTouchStart={this.handleTouchStart.bind(null, i.id, y)}                  
+                  />
 
-                      nr={i}
-                      youtubeid={this.props.links[i].youtube}
-                    />}
-  
-                  {this.props.links[i].soundcloud &&
-                    <SoundCloudPlayer
-                      clientId={"95f22ed54a5c297b1c41f72d713623ef"}
-                      resolveUrl={this.props.links[i].soundcloud}
-                      onStartTrack={() => this.props.playSoundcloud(i) }
-                      onStopTrack={() => console.log('Stopped soundcloud track!')}
-                      onReady={() => console.log('Soundcloud track is loaded!')}
-                      
-                      nr={i}                    
-                      addSCDispatchers={this.props.addSCDispatchers}
-                    />
-                  }
-                  
-                  <RemoveButton onClick={() => this.props.removeLink(i)}>X</RemoveButton>
+                  {order.indexOf(i)}
+                  {/*  && this.state.paused === false */}
+                  <MyPlayer 
+                    link={i.link}
+                    playing={(nowPlaying.id === i.id) ? true : false} 
+                    handlePlay={this.props.handlePlay}
+                    handlePause={this.props.handlePause}
+                    handleEnded={this.props.handleEnded}
+                    id={i.id}                
+                  />
+                  <RemoveButton onClick={() => this.props.removeLink(i.id)}>X</RemoveButton>
                 </StyledBar>
               )}
             </Spring>
-
           )
         })}
-      </div>
+      </ListDiv>
     )
   }
 }

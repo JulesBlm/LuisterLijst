@@ -1,28 +1,31 @@
 {
-  "name": "Luisterlijst",
-  "version": "0.0.1",
-  "description": "",
-  "keywords": [],
-  "main": "src/index.js",
+  "name": "luisterlijst",
+  "version": "0.1.0",
+  "private": true,
   "dependencies": {
-    "lodash": "4.17.5",
-    "react": "16.3.2",
-    "react-dom": "16.3.2",
-    "react-soundplayer": "^1.0.4",
-    "react-spring": "5.0.0",
-    "react-with-gesture": "1.0.6",
+    "firebase": "^5.5.2",
+    "lodash": "^4.17.11",
+    "proptypes": "^1.1.0",
+    "re-base": "^4.0.0",
+    "react": "^16.5.1",
+    "react-dom": "^16.5.1",
+    "react-player": "^1.6.4",
+    "react-scripts": "1.1.5",
+    "react-spring": "^5.7.2",
     "react-youtube": "^7.6.0",
-    "styled-components": "^3.4.5",
+    "styled-components": "^3.4.6",
     "sweetalert": "^2.1.0",
     "youtube-video-id": "0.0.2"
-  },
-  "devDependencies": {
-    "react-scripts": "^1.1.5"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
+  },
+  "devDependencies": {
+    "gh-pages": "^2.0.0"
   }
 }

@@ -1,21 +1,21 @@
 import React from "react";
+import StyledButton from './StyledButton';
 
 class AddLinkForm extends React.Component {
-  nameRef = React.createRef();
+  addRef = React.createRef();
 
   createLink = event => {
     event.preventDefault();
-    const enteredValue = this.nameRef.current.value;
-    const newLink = enteredValue;
-    this.props.addLink(newLink);
+    const enteredValue = this.addRef.current.value;
+    this.props.addLink(enteredValue);
     event.currentTarget.reset();
   };
 
   render() {
     return (
       <form onSubmit={this.createLink}>
-        <input name="name" required ref={this.nameRef} type="text" autoComplete="off" placeholder="YouTube/SoundCloud/MixCloud link" />
-        <button id="addButton" className="button" type="submit">+ Add Links</button>
+        <input name="name" required ref={this.addRef} type="text" autoComplete="off" placeholder="YouTube/SoundCloud/MixCloud link" />
+        <StyledButton id="addButton" className="button" type="submit">+ Add Link</StyledButton>
       </form>
     );
   }
