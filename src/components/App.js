@@ -14,7 +14,7 @@
 -- NOWPLAYING STATE DOENS'T CHANGE --
 - When one playing bar moved to top, and one is started below, color doesn't change
 - Same situation, when bar below is played, playing above doesn't pause
---- BECAUSE on events are triggered anymore by react player
+--- BECAUSE on events arent triggered anymore by react player
 
 - myPlayer keeps running when moved up, but not when moved down
 
@@ -26,10 +26,9 @@ import React, { Component } from 'react';
 import List from './List';
 import AddLinkForm from './AddLinkForm';
 import Controls from './Controls';
+import StyledClear from './StyledClear';
 import swal from 'sweetalert';
 import styled from 'styled-components';
-import firebase from "firebase";
-import base, { firebaseApp } from "../base";
 
 // const IntroBubble = styled.div`
 //   background-color: white;
@@ -46,25 +45,6 @@ import base, { firebaseApp } from "../base";
 const PageTitle = styled.h1`
   text-shadow: 1px 0px 2px black; 
   margin: 40px;
-`;
-
-const Clear = styled.button`
-  width: 80px;
-  opacity: 0.2;
-  padding: 15px;
-  position: absolute;
-  top: 20px;
-  right: 50px;
-  color: white;
-  background: coral;
-  border: 2px #eee solid;
-  font-size: 0.5em;
-  border-radius: 8px;
-
-  &:hover {
-    background: mediumpurple;
-    opacity: 0.8;
-  }
 `;
 
 class App extends Component {
@@ -85,23 +65,11 @@ class App extends Component {
   }
 
   componentDidMount() {
-    // const localStorageOrder = localStorage.getItem("order");
-    // if (localStorageOrder) {
-    //   // console.log("Retrieving from localStorage!")
-    //   this.setState({ order: JSON.parse(localStorageOrder) });
-    // }
-
-    firebase.auth().onAuthStateChanged(user => {
-      if (user) {
-        this.authHandler({ user });
-      }
-    });
-
-    this.ref = base.syncState("lijst", {
-      context: this,
-      state: "order",
-      asArray: true
-    })
+    const localStorageOrder = localStorage.getItem("order");
+    if (localStorageOrder) {
+      // console.log("Retrieving from localStorage!")
+      this.setState({ order: JSON.parse(localStorageOrder) });
+    }
 
   }
 
@@ -111,36 +79,8 @@ class App extends Component {
   }
 
   componentWillUnmount() {
-    base.removeBinding(this.ref);
   }
 
-  authHandler = async authData => {
-    // 1 .Look up the current store in the firebase database
-    const store = await base.fetch("lijst", { context: this });
-    console.log(store);
-    // // 2. Claim it if there is no owner
-    // if (!store.owner) {
-    //   // save it as our own
-    //   await base.post(`lijst/owner`, {
-    //     data: authData.user.uid
-    //   });
-    // }
-    // 3. Set the state of the inventory component to reflect the current user
-    this.setState({ uid: authData.user.uid });
-  };
-
-  authenticate = provider => {
-    const authProvider = new firebase.auth[`${provider}AuthProvider`]();
-    firebaseApp
-      .auth()
-      .signInWithPopup(authProvider)
-      .then(this.authHandler);
-  };
-
-  logout = async () => {
-     await firebase.auth().signOut();
-    this.setState({ uid: null });
-  };
 
   clearLocalStorage = () => {
     localStorage.clear();
@@ -286,7 +226,7 @@ class App extends Component {
   render() {
     return (
     <main>
-      <Clear onClick={this.clearLocalStorage}>Click if things aren't working anymore</Clear>
+      <StyledClear onClick={this.clearLocalStorage}>Click if things aren't working anymore</StyledClear>
       <PageTitle>Luisterlijst</PageTitle>
       {/* <IntroBubble>One unified queue for YouTube, SoundCloud and MixCloud. When one track is done the next one will start playing automatically, regardless of its type! This page will remember what track you entered, you'll keep your tracks next time you visit. Start by entering some YouTube, Sound- or Mixcloud links! Drag a bar by the dark part on the right to reorder the list.</IntroBubble> */}
       <Controls 
@@ -317,7 +257,7 @@ class App extends Component {
 
         order={this.state.order}
       />
-      {this.state.uid && <button onClick={this.logout}>Log Out!</button>}
+      {/* {this.state.uid && <button onClick={this.logout}>Log Out!</button>} */}
     </main> 
     )
   }

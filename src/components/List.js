@@ -1,17 +1,17 @@
 import React, { Component } from 'react';
 import { Spring } from 'react-spring';
 import MyPlayer from './MyPlayer';
-import Login from './Login';
+// import Login from './Login';
 import RemoveButton from './RemoveButton';
 import styled from 'styled-components';
-
 
 const clamp = (n, min, max) => Math.max(Math.min(n, max), min)
 const barHeight = 140;
 
+// width: ${props => props.theme.barWidth}
 const StyledBar = styled.div`
   position: absolute;
-  width: var(--bar-width);
+  width: var(--bar-width); 
   overflow: visible;
   transform-origin: 50% 50% 0px;
   border-radius: 4px;
@@ -51,8 +51,6 @@ const DragPart = styled.div`
     cursor: grabbing;
     background-color: #242424;
   }
-
-
 `;
 
 function reinsert(arr, from, to) {
@@ -93,7 +91,6 @@ class List extends Component {
     // console.groupEnd("End of handleTouchMove");
   }
 
-
   handleMouseUp = () => {
     // console.group("handleMouseUp")
     this.setState({ isPressed: false, topDeltaY: 0 })
@@ -108,7 +105,10 @@ class List extends Component {
       // console.log({pageY})
     // console.groupEnd("End of mouseDown")
 
-    this.setState({ topDeltaY: pageY - pressY, mouseY: pressY, isPressed: true, originalPosOfLastPressed: pos })
+    this.setState({ topDeltaY: pageY - pressY,
+                    mouseY: pressY,
+                    isPressed: true,
+                    originalPosOfLastPressed: pos })
   }
 
   handleMouseMove = ({ pageY }) => {
@@ -135,8 +135,8 @@ class List extends Component {
         newOrder = reinsert(order, myIndex, currentRow)
       }
       
-      this.props.updateOrder(newOrder)
-      this.setState({ mouseY: mouseY })
+      this.setState({ mouseY: mouseY });
+      this.props.updateOrder(newOrder);
     }
   }
 
@@ -145,10 +145,10 @@ class List extends Component {
     const { mouseY, isPressed, originalPosOfLastPressed } = this.state
     const nowPlaying = this.props.nowPlaying;
 
-    // 1. Check if they are logged in
-    if (!this.props.uid) {
-      return <Login authenticate={this.props.authenticate} />;
-    }
+    // // 1. Check if they are logged in
+    // if (!this.props.uid) {
+    //   return <Login authenticate={this.props.authenticate} />;
+    // }
 
     return (
       <ListDiv>
